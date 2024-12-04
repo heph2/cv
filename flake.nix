@@ -11,27 +11,27 @@
       };
    in rec {
       packages = {
-	document = pkgs.stdenvNoCC.mkDerivation rec {
-	  name = "latex-demo";
-	  src = self;
-	  buildInputs = [ pkgs.coreutils tex ];
-	  phases = ["unpackPhase" "buildPhase" "installPhase" ];
-	  buildPhase = ''
+	      document = pkgs.stdenvNoCC.mkDerivation rec {
+	        name = "latex-demo";
+	        src = self;
+	        buildInputs = [ pkgs.coreutils tex ];
+	        phases = ["unpackPhase" "buildPhase" "installPhase" ];
+	        buildPhase = ''
 	    export PATH="${pkgs.lib.makeBinPath buildInputs}";
 	    mkdir -p .cache/texmf-var
 	    env TEXMFHOME=.cache TEXMFVAR=.cache/texmf-var \
 		pdflatex main.tex
 	  '';
-	  installPhase = ''
+	        installPhase = ''
 	    mkdir -p $out
 	    cp main.pdf $out/
 	  '';
-	};
+	      };
       };
       devShell = pkgs.mkShell {
         nativeBuildInputs = [ pkgs.bashInteractive tex ];
         buildInputs = [ ];
       };
       defaultPackage = packages.document;
-    });
+   });
 }
